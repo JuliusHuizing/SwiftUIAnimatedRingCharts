@@ -2,8 +2,8 @@ import SwiftUI
 
 @available(iOS 15.0, *)
 private struct RingChartView: View {
-    @State var value: CGFloat
-    var ringMaxValue: CGFloat
+    @Binding var value: Double
+    var ringMaxValue: Double
     var colors: [Color]
     
     var body: some View {
@@ -18,24 +18,25 @@ private struct RingChartView: View {
                 .rotation(Angle.degrees(270))
                 .foregroundStyle(LinearGradient(colors: colors, startPoint: .trailing, endPoint: .leading))
                
-        }.onAppear{
-            let brancValue = self.value
-            self.value = 0
-            withAnimation(.easeInOut(duration: 2)) {
-                self.value = brancValue
-            }
         }
+//        .onAppear{
+//            let brancValue = self.value
+//            self.value = 0
+//            withAnimation(.easeInOut(duration: 2)) {
+//                self.value = brancValue
+//            }
+//        }
     }
 }
 
 @available(iOS 15.0, *)
 public struct RingChartsView: View {
     private var pageHelper = Pagehelper()
-    private var values: [CGFloat]
+    private var values: [Binding<Double>]
     private var colors: Array<Array<Color>>? = []
-    private var ringsMaxValue: CGFloat
+    private var ringsMaxValue: Double
     
-    public init(values: [CGFloat], colors: Array<Array<Color>>?, ringsMaxValue: CGFloat){
+    public init(values: [Binding<Double>], colors: Array<Array<Color>>?, ringsMaxValue: Double){
         self.values = values
         self.colors = colors ?? []
         self.ringsMaxValue = ringsMaxValue
@@ -52,22 +53,22 @@ public struct RingChartsView: View {
     }
 }
 
-#if DEBUG
-struct SwiftUIPercentChart_Previews : PreviewProvider {
-    @available(iOS 13.0, *)
-    static var previews: some View {
-        
-        if #available(iOS 15.0, *) {
-            VStack{
-                RingChartsView(values: [100, 90, 70, 0], colors: nil, ringsMaxValue: 100)
-            }.frame(width: 200, height: 200, alignment: .center)
-            
-        } else {
-            // Fallback on earlier versions
-        }
-    }
-}
-#endif
+//#if DEBUG
+//struct SwiftUIPercentChart_Previews : PreviewProvider {
+//    @available(iOS 13.0, *)
+//    static var previews: some View {
+//
+//        if #available(iOS 15.0, *) {
+//            VStack{
+//                RingChartsView(values: [100, 90, 70, 0], colors: nil, ringsMaxValue: 100)
+//            }.frame(width: 200, height: 200, alignment: .center)
+//
+//        } else {
+//            // Fallback on earlier versions
+//        }
+//    }
+//}
+//#endif
 
 @available(iOS 15.0, *)
 private struct Pagehelper{
@@ -79,7 +80,7 @@ private struct Pagehelper{
         return [.blue]
     }
     
-    func setSpace(_ proxy: GeometryProxy, count: Int) -> CGFloat{
-        return ((proxy.size.height) - (proxy.size.width / (proxy.size.width / 30) * CGFloat(count)))
+    func setSpace(_ proxy: GeometryProxy, count: Int) -> Double{
+        return ((proxy.size.height) - (proxy.size.width / (proxy.size.width / 30) * Double(count)))
     }
 }
